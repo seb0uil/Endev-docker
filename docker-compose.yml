@@ -1,0 +1,57 @@
+version: '3.6'
+
+services:
+
+#  drupal:
+#    image: drupal:8-apache
+#    ports:
+#    - 80:80
+#    volumes:
+#    - web/modules:/var/www/html/modules
+#    - web/profiles:/var/www/html/profiles
+#    - web/themes:/var/www/html/themes
+#    # this takes advantage of the feature in Docker that a new anonymous
+#    # volume (which is what we're creating here) will be initialized with the
+#    # existing content of the image at the same location
+#    - web/sites:/var/www/html/sites
+#    restart: always
+#    links:
+#      - db
+
+  drcons:
+    build: ./drcons
+    links:
+      - server
+
+  server:
+    build:
+      context: ./server
+      dockerfile: apache.Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - type: bind
+        source: /web
+        target: /var/www/html/
+
+
+  db:
+    build: ./database
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "dewy"
+      MYSQL_PASSWORD: "dewy"
+      MYSQL_DATABASE: "drupal8"
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+    - PMA_ARBITRARY=1
+    restart: always
+    ports:
+    - 8080:80
+    links:
+      - db
+      - server
