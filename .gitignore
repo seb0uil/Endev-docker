@@ -1,5 +1,8 @@
+# Ignore files for this project
+
 .idea/*
 web/vendor
-web/
+web/project
+web/test.php
 composer.setup
 compose.phar
