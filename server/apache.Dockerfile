@@ -13,7 +13,7 @@ RUN chmod +x /usr/local/bin/drupal
 RUN pecl install xdebug-2.6.1 && docker-php-ext-enable xdebug
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev \
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libpq-dev \
   && rm -rf /var/lib/apt/lists/* \
   && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
   && docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip
